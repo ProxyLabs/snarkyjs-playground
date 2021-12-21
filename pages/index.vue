@@ -1,8 +1,9 @@
 <template>
-  <Tutorial />
+  <!-- <Tutorial /> -->
+  <Editor />
 </template>
 
-<script lang="ts">
+<script lang="ts" type="module">
 import Vue from 'vue'
 
 export default Vue.extend({

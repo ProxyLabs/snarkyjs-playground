@@ -16,7 +16,26 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-
+  render: {
+    static: {
+      setHeaders(res) {
+        res.setHeader('X-Frame-Options', 'ALLOWALL')
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.setHeader('Access-Control-Allow-Methods', 'GET')
+        res.setHeader(
+          'Access-Control-Allow-Headers',
+          'Origin, X-Requested-With, Content-Type, Accept'
+        )
+        res.setHeader('Cross-Origin-Opener-Policy', 'same-origin')
+        res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp')
+        res.setHeader('Cross-Origin-Opener-Policy-Report-Only', 'same-origin')
+        res.setHeader(
+          'Cross-Origin-Embedder-Policy-Report-Only',
+          'require-corp'
+        )
+      },
+    },
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -37,6 +56,9 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
   ],
+  router: {
+    middleware: 'setheaders',
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
