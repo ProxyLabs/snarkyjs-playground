@@ -66,14 +66,16 @@ console.log(a.mul(5).add(1).sub(a.mul(2)).toString());
           target: 'es6',
         })
         let pre = `
-        async function load() {
-          ${js}
-        }
-        load();
+          async function load() {
+            ${js}
+          }
+          load();
         `
-        await new Function(pre)()
+        await eval(pre)
+        //await new Function(pre)()
       } catch (e) {
-        console.log(e)
+        // console.log(e)
+        this.consoleOutput.push(e)
       }
     },
   },
