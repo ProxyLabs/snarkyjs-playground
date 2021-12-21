@@ -14,10 +14,7 @@
   },
   "type": "module",
   "dependencies": {
-    "bootstrap": "^4.6.1",
-    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.19.3",
-    "jailed": "^0.3.1",
     "nuxt": "^2.15.8",
     "snarkyjs": "^0.1.11",
     "vue": "^2.6.14",
