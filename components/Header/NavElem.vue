@@ -24,8 +24,9 @@ export default {
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
   height: 100%;
-  width: 64px;
-  padding: 0;
+  width: auto;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-left: 15px;
   color: white;
   text-align: center;
