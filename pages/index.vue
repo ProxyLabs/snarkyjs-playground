@@ -3,7 +3,7 @@
     <Header />
     <div class="content">
       <div class="card">
-        <h1>Playground</h1>
+        <h1 class="fira">Playground</h1>
       </div>
     </div>
   </div>
@@ -11,12 +11,11 @@
 
 <script lang="ts" type="module">
 import Vue from 'vue'
-import Header from '~/components/Header.vue'
+import Header from '~/components/Header/Header.vue'
 
 export default Vue.extend({
   name: 'IndexPage',
 })
-Header
 </script>
 <style scoped>
 .wrapper {

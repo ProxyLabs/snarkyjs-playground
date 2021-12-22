@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <Header />
     <ClientOnly>
       <Editor />
     </ClientOnly>
@@ -9,12 +8,10 @@
 
 <script lang="ts" type="module">
 import Vue from 'vue'
-import Header from '~/components/Header.vue'
 
 export default Vue.extend({
   name: 'Playground',
 })
-Header
 </script>
 <style scoped>
 .wrapper {

@@ -1,5 +1,11 @@
 <template>
   <div class="wrapper">
+    <Header>
+      <NavElem label="Run" icon="play" v-on:clicked="transpile()" />
+      <NavElem label="Clear" icon="trash" v-on:clicked="clearConsole()" />
+      <NavElem label="Share" icon="link" />
+    </Header>
+
     <MonacoEditor
       class="editor"
       v-model="code"
@@ -11,22 +17,33 @@
     />
 
     <div class="console">
-      <div class="controls">
-        <button class="execute-btn" @click="transpile()">RUN</button>
-        <button class="execute-btn" @click="clearConsole()">CLEAR</button>
+      <div class="console-nav">
+        <span style="margin-right: 15px">>_ Console</span>
+        |
+        <span style="margin-right: 15px; margin-left: 15px">
+          <font-awesome-icon :icon="['fas', 'hashtag']" />
+          {{ consoleOutput.length }}</span
+        >
+        |
+        <span style="margin-left: 15px">
+          <font-awesome-icon :icon="['fas', 'exclamation-triangle']" />
+          {{ consoleOutput.filter((x) => x.type == 'error').length }}</span
+        >
       </div>
       <div class="terminal">
-        <span v-for="(msg, m) in consoleOutput" :key="m">
-          <span
-            v-if="msg.type == 'error'"
-            style="color: red; font-weight: 100; font-size: 10px"
-            >[ERROR]</span
+        <template v-for="(msg, m) in consoleOutput">
+          <div
+            class="console-entry"
+            :class="
+              msg.type == 'error' ? 'console-entry-error' : 'console-entry-info'
+            "
+            :key="m"
           >
-          <span v-else style="color: grey; font-weight: 100; font-size: 10px"
-            >[OUT]</span
-          >
-          <span style="color: white">{{ msg.message }}</span> <br />
-        </span>
+            <span>{{ msg.message }}</span> <br />
+          </div>
+        </template>
+      </div>
+      <div class="cursor">
         <span style="color: white; font-size: 1.3rem; weight: 300"
           >><span class="cursor">_</span></span
         >
@@ -37,12 +54,15 @@
 
 <script>
 import MonacoEditor from 'vue-monaco'
-
+import Header from './Header/Header.vue'
+import NavElem from './Header/NavElem.vue'
 import { transpileModule } from 'typescript'
 
 export default {
   components: {
     MonacoEditor,
+    NavElem,
+    Header,
   },
   data() {
     return {
@@ -74,6 +94,18 @@ throw "throwing an error right here";`,
   methods: {
     clearConsole() {
       this.consoleOutput = []
+    },
+    scrollConsole() {
+      let div = document.querySelector('div.terminal')
+      let divCurrentUserScrollPosition = div.scrollTop + div.offsetHeight
+      let divScrollHeight = div.scrollHeight
+
+      div.addEventListener('DOMSubtreeModified', () => {
+        if (divScrollHeight === divCurrentUserScrollPosition) {
+          // Scroll to bottom of div
+          div.scrollTo({ left: 0, top: div.scrollHeight })
+        }
+      })
     },
     async transpile() {
       const compilerOptions = {
@@ -112,6 +144,7 @@ throw "throwing an error right here";`,
           message: runtimeError,
         })
       }
+      // this.scrollConsole()
     },
   },
   async created() {
@@ -136,6 +169,7 @@ throw "throwing an error right here";`,
       current_log.apply(null, arguments)
     }
   },
+  mounted() {},
 }
 </script>
 
@@ -150,11 +184,12 @@ throw "throwing an error right here";`,
   height: 60vh;
   margin-top: 5px;
   border-bottom: 2px solid rgb(54, 54, 54);
+  background-color: #1f2227 !important;
 }
 
 .console {
   width: 100%;
-  height: 200px;
+  height: 170px;
   margin-right: 20px;
   /* margin: 4px, 4px;
   padding: 4px;
@@ -168,17 +203,39 @@ throw "throwing an error right here";`,
   text-align: justify; */
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #3b3b3b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #686868;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #686868;
+}
 .terminal {
-  margin: 4px, 4px;
-  padding: 4px;
-  border-radius: 5px;
-  width: 100%;
+  /* margin: 4px, 4px;
+  padding: 4px; */
+  width: auto;
   color: white;
-  border: solid 2px rgb(148, 148, 148);
-  height: 150px;
+  /* border: solid 2px rgb(148, 148, 148); */
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: justify;
+  border-bottom: 1px solid grey;
+}
+
+.console-nav {
+  color: grey;
+  padding: 5px;
+  background-color: #222427;
+  border-bottom: 3px solid #444549;
 }
 
 .execute-btn {
@@ -195,6 +252,30 @@ throw "throwing an error right here";`,
   margin-left: 5px;
   background-color: rgb(213, 213, 251);
   cursor: pointer;
+}
+
+.console-entry {
+  font-family: 'Fira Mono', 'Courier New', Courier, monospace;
+  border-bottom: 1px solid rgb(102, 102, 102);
+  margin: 0;
+  padding: 4px;
+}
+
+.console-entry-info {
+  background-color: #17181a;
+}
+
+.console-entry-info span {
+  color: #2e71ff;
+}
+
+.console-entry-error {
+  background-color: #994332;
+  border-left: 4px solid rgb(199, 0, 0);
+}
+
+.console-entry-error span {
+  color: #ffffff;
 }
 
 .cursor {

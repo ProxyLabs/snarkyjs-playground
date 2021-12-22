@@ -383,3 +383,15 @@
     </defs>
   </svg>
 </template>
+<style scoped>
+.logo {
+  transition: 0.3s;
+}
+.logo:hover {
+  -webkit-filter: drop-shadow(0 0 5px rgba(186, 0, 223, 0.6));
+  filter: drop-shadow(0 0 5px rgba(186, 0, 223, 0.6));
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+</style>
