@@ -11,8 +11,14 @@
   width: 100%;
   background-color: #1e1e1e;
   box-shadow: 0px 2px 2px #181818;
+  padding: 15px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+}
+
+.content {
+  align-self: left;
+  width: 200px;
 }
 </style>

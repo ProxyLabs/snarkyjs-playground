@@ -38,7 +38,12 @@
 <script>
 import MonacoEditor from 'vue-monaco'
 
-import { transpile } from 'typescript'
+import {
+  CompilerOptions,
+  getDefaultCompilerOptions,
+  transpileModule,
+  TranspileOutput,
+} from 'typescript'
 
 export default {
   components: {
@@ -76,13 +81,22 @@ throw "throwing an error right here";`,
       this.consoleOutput = []
     },
     async transpile() {
-      const js = transpile(this.code, {
-        target: 'es6',
-      })
+      const compilerOptions = {
+        allowJs: false,
+        alwaysStrict: true,
+        checkJs: true,
+        strict: true,
+        target: 'ESNext',
+      }
+
+      //getDefaultCompilerOptions()
+      // console.log(compilerOptions)
+      let { outputText } = transpileModule(this.code, { compilerOptions })
+      //console.log(outputText)
       let pre = `
           async function load() {
             try {
-              ${js}
+              ${outputText}
             } catch(e) {
               console.error(e)
             }
@@ -116,7 +130,6 @@ throw "throwing an error right here";`,
       }
       current_error.apply(null, arguments)
     }
-
     let current_log = console.log
     console.log = (msg) => {
       if (msg !== undefined) {
