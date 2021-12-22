@@ -17,10 +17,14 @@
       </div>
       <div class="terminal">
         <span v-for="(msg, m) in consoleOutput" :key="m">
-          <span v-if="msg.type == 'error'" style="color: red; font-weight: 100"
+          <span
+            v-if="msg.type == 'error'"
+            style="color: red; font-weight: 100; font-size: 10px"
             >[ERROR]</span
           >
-          <span v-else style="color: grey; font-weight: 100">[OUT]</span>
+          <span v-else style="color: grey; font-weight: 100; font-size: 10px"
+            >[OUT]</span
+          >
           <span style="color: white">{{ msg.message }}</span> <br />
         </span>
         <span style="color: white; font-size: 1.3rem; weight: 300"
@@ -42,21 +46,13 @@ export default {
   },
   data() {
     return {
-      code: `
-
-/*
-    Interactive SnarkyJS Web Playground
-    Made by Trivo
-
-    ------
-
+      code: `/*
     Currently only dynamic import works
     the entire script will be executed locally inside your browser;
     no data leaves your computer
-    very WIP!
+    very WIP - **DO NOT** use for anything important
+    expect **MANY** bugs and weirds features ;)
 */
-
-"use strict"
 
 let { isReady, Field } = await import('/snarkyjs/index.js')
 
@@ -68,9 +64,10 @@ let a = new Field(3);
 
 console.log(a.mul(5).add(1).sub(a.mul(2)).toString());
 
-throw "error";
+let b = Field(3).mul(Field(2));
 
-      `,
+console.log(b.toString());
+throw "throwing an error right here";`,
       consoleOutput: [],
     }
   },
@@ -108,7 +105,7 @@ throw "error";
       }
     },
   },
-  created() {
+  async created() {
     let current_error = console.error
     console.error = (msg) => {
       if (msg !== undefined) {
@@ -134,18 +131,22 @@ throw "error";
 }
 </script>
 
-<style>
+<style scoped>
 .wrapper {
-  display: flex;
-  height: 100vh;
+  /* display: flex; */
+  height: 100%;
 }
 
 .editor {
-  width: 50%;
+  width: 100%;
+  height: 60vh;
+  margin-top: 5px;
+  border-bottom: 2px solid rgb(54, 54, 54);
 }
 
 .console {
-  width: 400px;
+  width: 100%;
+  height: 200px;
   margin-right: 20px;
   /* margin: 4px, 4px;
   padding: 4px;
@@ -166,7 +167,7 @@ throw "error";
   width: 100%;
   color: white;
   border: solid 2px rgb(148, 148, 148);
-  height: 110px;
+  height: 150px;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: justify;
@@ -183,6 +184,7 @@ throw "error";
   border: none;
   margin-bottom: 5px;
   margin-top: 15px;
+  margin-left: 5px;
   background-color: rgb(213, 213, 251);
   cursor: pointer;
 }

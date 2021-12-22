@@ -1,0 +1,25 @@
+/*
+    Interactive SnarkyJS Web Playground
+    Made by Trivo
+
+    ------
+
+    Currently only dynamic import works
+    the entire script will be executed locally inside your browser;
+    no data leaves your computer
+    very WIP!
+*/
+
+"use strict"
+
+let { isReady, Field } = await import('/snarkyjs/index.js')
+
+await isReady;
+
+console.log("Hello SnarkyJS!");
+
+let a = new Field(3);
+
+console.log(a.mul(5).add(1).sub(a.mul(2)).toString());
+
+throw "error";
