@@ -38,12 +38,7 @@
 <script>
 import MonacoEditor from 'vue-monaco'
 
-import {
-  CompilerOptions,
-  getDefaultCompilerOptions,
-  transpileModule,
-  TranspileOutput,
-} from 'typescript'
+import { transpileModule } from 'typescript'
 
 export default {
   components: {

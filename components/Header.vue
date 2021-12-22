@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
-    <Logo />
+    <LogoSmall />
   </div>
 </template>
 
 <style scoped>
 .wrapper {
   z-index: 5;
-  height: 40px;
+  height: 40px !important;
   width: 100%;
   background-color: #1e1e1e;
   box-shadow: 0px 2px 2px #181818;

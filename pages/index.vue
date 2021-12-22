@@ -1,9 +1,11 @@
 <template>
   <div class="wrapper">
     <Header />
-    <ClientOnly>
-      <Editor />
-    </ClientOnly>
+    <div class="content">
+      <div class="card">
+        <h1>Playground</h1>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,18 +18,27 @@ export default Vue.extend({
 })
 Header
 </script>
-<style>
-body {
-  padding: 0;
-  margin: 0;
-  background-color: #1e1e1e;
-  overflow: hidden;
-}
-
+<style scoped>
 .wrapper {
   width: 100%;
   height: 100%;
-  /* height: 100%; */
-  /* border: solid 2px red; */
+}
+
+.content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.card {
+  padding: 10px 25px;
+  width: auto;
+  height: auto;
+  border: solid 1px rgb(90, 90, 90);
+  align-content: center;
+  text-align: center;
+  border-radius: 5px;
 }
 </style>
