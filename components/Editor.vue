@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <!-- <MonacoEditor
+    <MonacoEditor
       class="editor"
       v-model="code"
       language="typescript"
@@ -8,12 +8,13 @@
       :options="{
         automaticLayout: true,
       }"
-    /> -->
-    <button class="execute-btn" @click="transpile()">EXECUTE</button>
-
-    <button class="execute-btn" @click="clearConsole()">CLEAR</button>
+    />
 
     <div class="console">
+      <div class="controls">
+        <button class="execute-btn" @click="transpile()">RUN</button>
+        <button class="execute-btn" @click="clearConsole()">CLEAR</button>
+      </div>
       <div class="terminal">
         <span v-for="(msg, m) in consoleOutput" :key="m">
           <span v-if="msg.type == 'error'" style="color: red; font-weight: 100"
@@ -78,28 +79,47 @@ throw "error";
       this.consoleOutput = []
     },
     async transpile() {
-      try {
-        const js = transpile(this.code, {
-          target: 'es6',
-        })
-        let pre = `
+      const js = transpile(this.code, {
+        target: 'es6',
+      })
+      let pre = `
           async function load() {
-            ${js}
+            try {
+              ${js}
+            } catch(e) {
+              console.error(e)
+            }
           }
           load();
         `
-        await eval(pre)
-        //await new Function(pre)()
-      } catch (e) {
+      try {
+        let func = new Function(pre)
+        func()
+      } catch (runtimeError) {
+        console.log('------')
+        console.error('legal code; unforeseen result: ', runtimeError)
+        console.info(runtimeError.name, '-', runtimeError.message)
+        console.log('------')
         // console.log(e)
         this.consoleOutput.push({
           type: 'error',
-          message: e,
+          message: runtimeError,
         })
       }
     },
   },
   created() {
+    let current_error = console.error
+    console.error = (msg) => {
+      if (msg !== undefined) {
+        this.consoleOutput.push({
+          type: 'error',
+          message: msg,
+        })
+      }
+      current_error.apply(null, arguments)
+    }
+
     let current_log = console.log
     console.log = (msg) => {
       if (msg !== undefined) {
@@ -125,24 +145,45 @@ throw "error";
 }
 
 .console {
+  width: 400px;
+  margin-right: 20px;
+  /* margin: 4px, 4px;
+  padding: 4px;
+  border-radius: 5px;
+  width: 100%;
+  color: white;
+  border: solid 2px rgb(148, 148, 148);
+  height: 110px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify; */
+}
+
+.terminal {
   margin: 4px, 4px;
   padding: 4px;
   border-radius: 5px;
   width: 100%;
   color: white;
-  border: solid 2px red;
+  border: solid 2px rgb(148, 148, 148);
   height: 110px;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: justify;
 }
+
 .execute-btn {
   width: auto;
   height: auto;
-  padding: 10px;
+  padding: 5px;
   color: black;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  background-color: rgb(213, 213, 251);
   cursor: pointer;
 }
 
