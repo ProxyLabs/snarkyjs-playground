@@ -43,11 +43,11 @@
           </div>
         </template>
       </div>
-      <div class="cursor">
+      <!-- <div class="cursor">
         <span style="color: white; font-size: 1.3rem; weight: 300"
           >><span class="cursor">_</span></span
         >
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
