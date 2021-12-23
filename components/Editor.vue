@@ -104,6 +104,10 @@ throw "throwing an error right here";`,
           type: 'console',
           message: "Welcome! Time to get Snark'in ;)",
         },
+        {
+          type: 'console',
+          message: 'Running for the first time may take up to 5 seconds!',
+        },
       ],
     }
   },
