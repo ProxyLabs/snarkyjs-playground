@@ -34,21 +34,39 @@
         <template v-for="(msg, m) in consoleOutput">
           <div :key="m">
             <div
-              class="console-entry console-entry-info"
-              v-if="msg.type == 'info'"
+              class="console-entry console-entry-log"
+              v-if="msg.type == 'log'"
             >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'terminal']" />
+              </span>
               <span>{{ msg.message }}</span> <br />
             </div>
             <div
               class="console-entry console-entry-error"
               v-if="msg.type == 'error'"
             >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'times']" />
+              </span>
               <span>{{ msg.message }}</span> <br />
             </div>
             <div
-              class="console-entry console-entry-console"
-              v-if="msg.type == 'console'"
+              class="console-entry console-entry-info"
+              v-if="msg.type == 'info'"
             >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'info']" />
+              </span>
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-warn"
+              v-if="msg.type == 'warn'"
+            >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'bug']" />
+              </span>
               <span>{{ msg.message }}</span> <br />
             </div>
           </div>
@@ -99,16 +117,7 @@ let b = Field(3).mul(Field(2));
 
 console.log(b.toString());
 throw "throwing an error right here";`,
-      consoleOutput: [
-        {
-          type: 'console',
-          message: "Welcome! Time to get Snark'in ;)",
-        },
-        {
-          type: 'console',
-          message: 'Running for the first time may take up to 5 seconds!',
-        },
-      ],
+      consoleOutput: [],
     }
   },
   methods: {
@@ -172,28 +181,47 @@ throw "throwing an error right here";`,
     },
   },
   async created() {
-    let current_error = console.error
-    console.error = (msg) => {
-      if (msg !== undefined) {
+    let current_warn = console.warn
+    console.warn = (msg) => {
+      if (msg != '') {
         this.consoleOutput.push({
-          type: 'error',
+          type: 'warn',
           message: msg,
         })
       }
-      current_error.apply(null, arguments)
+      current_warn.apply(null, arguments)
+    }
+    let current_info = console.info
+    console.info = (msg) => {
+      this.consoleOutput.push({
+        type: 'info',
+        message: msg,
+      })
+      current_info.apply(null, arguments)
     }
     let current_log = console.log
     console.log = (msg) => {
-      if (msg !== undefined) {
-        this.consoleOutput.push({
-          type: 'info',
-          message: msg,
-        })
-      }
+      this.consoleOutput.push({
+        type: 'log',
+        message: msg,
+      })
       current_log.apply(null, arguments)
     }
+    let current_error = console.error
+    console.error = (msg) => {
+      this.consoleOutput.push({
+        type: 'error',
+        message: msg,
+      })
+      current_error.apply(null, arguments)
+    }
   },
-  mounted() {},
+  mounted() {
+    console.info("Welcome! Time to get Snarky'n ;)")
+    console.info(
+      'First execution might take up to 5 seconds for SnarkyJS to load in..'
+    )
+  },
 }
 </script>
 
@@ -289,20 +317,28 @@ throw "throwing an error right here";`,
   padding-left: 10px;
 }
 
+.console-entry-log {
+  background-color: #17181a;
+}
+
+.console-entry-log span {
+  color: #f5eea2;
+}
+
 .console-entry-info {
   background-color: #17181a;
 }
 
 .console-entry-info span {
-  color: #f5eea2;
+  color: #2b8aff;
 }
 
-.console-entry-console {
+.console-entry-warn {
   background-color: #17181a;
 }
 
-.console-entry-console span {
-  color: #2b8aff;
+.console-entry-warn span {
+  color: #f69e83;
 }
 
 .console-entry-error {
