@@ -1,5 +1,11 @@
 <template>
   <div class="wrapper">
+    <Header>
+      <NavElem label="Run" icon="play" v-on:clicked="transpile()" />
+      <NavElem label="Clear" icon="trash" v-on:clicked="clearConsole()" />
+      <NavElem label="Share" icon="link" />
+    </Header>
+
     <MonacoEditor
       class="editor"
       v-model="code"
@@ -11,52 +17,91 @@
     />
 
     <div class="console">
-      <div class="controls">
-        <button class="execute-btn" @click="transpile()">RUN</button>
-        <button class="execute-btn" @click="clearConsole()">CLEAR</button>
+      <div class="console-nav">
+        <span style="margin-right: 15px">>_ Console</span>
+        |
+        <span style="margin-right: 15px; margin-left: 15px">
+          <font-awesome-icon :icon="['fas', 'hashtag']" />
+          {{ consoleOutput.length }}</span
+        >
+        |
+        <span style="margin-left: 15px">
+          <font-awesome-icon :icon="['fas', 'exclamation-triangle']" />
+          {{ consoleOutput.filter((x) => x.type == 'error').length }}</span
+        >
       </div>
       <div class="terminal">
-        <span v-for="(msg, m) in consoleOutput" :key="m">
-          <span v-if="msg.type == 'error'" style="color: red; font-weight: 100"
-            >[ERROR]</span
-          >
-          <span v-else style="color: grey; font-weight: 100">[OUT]</span>
-          <span style="color: white">{{ msg.message }}</span> <br />
-        </span>
+        <template v-for="(msg, m) in consoleOutput">
+          <div :key="m">
+            <div
+              class="console-entry console-entry-log"
+              v-if="msg.type == 'log'"
+            >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'terminal']" />
+              </span>
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-error"
+              v-if="msg.type == 'error'"
+            >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'times']" />
+              </span>
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-info"
+              v-if="msg.type == 'info'"
+            >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'info']" />
+              </span>
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-warn"
+              v-if="msg.type == 'warn'"
+            >
+              <span class="icon is-left">
+                <font-awesome-icon :icon="['fas', 'bug']" />
+              </span>
+              <span>{{ msg.message }}</span> <br />
+            </div>
+          </div>
+        </template>
+      </div>
+      <!-- <div class="cursor">
         <span style="color: white; font-size: 1.3rem; weight: 300"
           >><span class="cursor">_</span></span
         >
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import MonacoEditor from 'vue-monaco'
-
-import { transpile } from 'typescript'
+import Header from './Header/Header.vue'
+import NavElem from './Header/NavElem.vue'
+import { transpileModule } from 'typescript'
 
 export default {
   components: {
     MonacoEditor,
+    NavElem,
+    Header,
   },
   data() {
     return {
-      code: `
-
-/*
-    Interactive SnarkyJS Web Playground
-    Made by Trivo
-
-    ------
-
+      code: `/*
     Currently only dynamic import works
     the entire script will be executed locally inside your browser;
     no data leaves your computer
-    very WIP!
+    very WIP - **DO NOT** use for anything important
+    expect **MANY** bugs and weirds features ;)
 */
-
-"use strict"
 
 let { isReady, Field } = await import('/snarkyjs/index.js')
 
@@ -68,9 +113,10 @@ let a = new Field(3);
 
 console.log(a.mul(5).add(1).sub(a.mul(2)).toString());
 
-throw "error";
+let b = Field(3).mul(Field(2));
 
-      `,
+console.log(b.toString());
+throw "throwing an error right here";`,
       consoleOutput: [],
     }
   },
@@ -78,14 +124,39 @@ throw "error";
     clearConsole() {
       this.consoleOutput = []
     },
-    async transpile() {
-      const js = transpile(this.code, {
-        target: 'es6',
+    scrollConsole() {
+      let div = document.querySelector('div.terminal')
+      let divCurrentUserScrollPosition = div.scrollTop + div.offsetHeight
+      let divScrollHeight = div.scrollHeight
+
+      div.addEventListener('DOMSubtreeModified', () => {
+        if (divScrollHeight === divCurrentUserScrollPosition) {
+          // Scroll to bottom of div
+          div.scrollTo({ left: 0, top: div.scrollHeight })
+        }
       })
+    },
+    async transpile() {
+      this.consoleOutput.push({
+        type: 'console',
+        message: 'Executing code snippet..',
+      })
+      const compilerOptions = {
+        allowJs: false,
+        alwaysStrict: true,
+        checkJs: true,
+        strict: true,
+        target: 'ESNext',
+      }
+
+      //getDefaultCompilerOptions()
+      // console.log(compilerOptions)
+      let { outputText } = transpileModule(this.code, { compilerOptions })
+      //console.log(outputText)
       let pre = `
           async function load() {
             try {
-              ${js}
+              ${outputText}
             } catch(e) {
               console.error(e)
             }
@@ -106,47 +177,75 @@ throw "error";
           message: runtimeError,
         })
       }
+      // this.scrollConsole()
     },
   },
-  created() {
-    let current_error = console.error
-    console.error = (msg) => {
-      if (msg !== undefined) {
+  async created() {
+    let current_warn = console.warn
+    console.warn = (msg) => {
+      if (msg != '') {
         this.consoleOutput.push({
-          type: 'error',
+          type: 'warn',
           message: msg,
         })
       }
-      current_error.apply(null, arguments)
+      current_warn.apply(null, arguments)
     }
-
+    let current_info = console.info
+    console.info = (msg) => {
+      this.consoleOutput.push({
+        type: 'info',
+        message: msg,
+      })
+      current_info.apply(null, arguments)
+    }
     let current_log = console.log
     console.log = (msg) => {
-      if (msg !== undefined) {
-        this.consoleOutput.push({
-          type: 'info',
-          message: msg,
-        })
-      }
+      this.consoleOutput.push({
+        type: 'log',
+        message: msg,
+      })
       current_log.apply(null, arguments)
     }
+    let current_error = console.error
+    console.error = (msg) => {
+      this.consoleOutput.push({
+        type: 'error',
+        message: msg,
+      })
+      current_error.apply(null, arguments)
+    }
+  },
+  mounted() {
+    console.info("Welcome! Time to get Snarky'n ;)")
+    console.info(
+      'First execution might take up to 5 seconds for SnarkyJS to load in..'
+    )
   },
 }
 </script>
 
-<style>
+<style scoped>
 .wrapper {
-  display: flex;
-  height: 100vh;
+  /* display: flex; */
+  height: 100%;
 }
 
 .editor {
-  width: 50%;
+  width: 100%;
+  height: 60vh;
+  margin-top: 5px;
+  border-bottom: 2px solid rgb(54, 54, 54);
+  background-color: #1f2227 !important;
 }
 
 .console {
-  width: 400px;
-  margin-right: 20px;
+  width: auto;
+  height: 170px;
+  /* margin-right: 20px; */
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
   /* margin: 4px, 4px;
   padding: 4px;
   border-radius: 5px;
@@ -159,17 +258,39 @@ throw "error";
   text-align: justify; */
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #3b3b3b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #686868;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #686868;
+}
 .terminal {
-  margin: 4px, 4px;
-  padding: 4px;
-  border-radius: 5px;
-  width: 100%;
+  /* margin: 4px, 4px;
+  padding: 4px; */
+  width: auto;
   color: white;
-  border: solid 2px rgb(148, 148, 148);
-  height: 110px;
+  /* border: solid 2px rgb(148, 148, 148); */
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: justify;
+  border-bottom: 1px solid grey;
+}
+
+.console-nav {
+  color: grey;
+  padding: 5px;
+  background-color: #222427;
+  border-bottom: 3px solid #444549;
 }
 
 .execute-btn {
@@ -183,8 +304,50 @@ throw "error";
   border: none;
   margin-bottom: 5px;
   margin-top: 15px;
+  margin-left: 5px;
   background-color: rgb(213, 213, 251);
   cursor: pointer;
+}
+
+.console-entry {
+  font-family: 'Fira Mono', 'Courier New', Courier, monospace;
+  border-bottom: 1px solid rgb(102, 102, 102);
+  margin: 0;
+  padding: 4px;
+  padding-left: 10px;
+}
+
+.console-entry-log {
+  background-color: #17181a;
+}
+
+.console-entry-log span {
+  color: #f5eea2;
+}
+
+.console-entry-info {
+  background-color: #17181a;
+}
+
+.console-entry-info span {
+  color: #2b8aff;
+}
+
+.console-entry-warn {
+  background-color: #17181a;
+}
+
+.console-entry-warn span {
+  color: #f69e83;
+}
+
+.console-entry-error {
+  background-color: #994332;
+  border-left: 4px solid rgb(199, 0, 0);
+}
+
+.console-entry-error span {
+  color: #ffffff;
 }
 
 .cursor {
