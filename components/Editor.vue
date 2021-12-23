@@ -259,6 +259,7 @@ throw "throwing an error right here";`,
   border-bottom: 1px solid rgb(102, 102, 102);
   margin: 0;
   padding: 4px;
+  padding-left: 10px;
 }
 
 .console-entry-info {
@@ -266,7 +267,7 @@ throw "throwing an error right here";`,
 }
 
 .console-entry-info span {
-  color: #2e71ff;
+  color: #f5eea2;
 }
 
 .console-entry-error {
