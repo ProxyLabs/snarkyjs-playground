@@ -212,9 +212,12 @@ throw "throwing an error right here";`,
 }
 
 .console {
-  width: 100%;
+  width: auto;
   height: 170px;
-  margin-right: 20px;
+  /* margin-right: 20px; */
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
   /* margin: 4px, 4px;
   padding: 4px;
   border-radius: 5px;
