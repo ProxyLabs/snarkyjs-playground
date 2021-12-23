@@ -32,14 +32,25 @@
       </div>
       <div class="terminal">
         <template v-for="(msg, m) in consoleOutput">
-          <div
-            class="console-entry"
-            :class="
-              msg.type == 'error' ? 'console-entry-error' : 'console-entry-info'
-            "
-            :key="m"
-          >
-            <span>{{ msg.message }}</span> <br />
+          <div :key="m">
+            <div
+              class="console-entry console-entry-info"
+              v-if="msg.type == 'info'"
+            >
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-error"
+              v-if="msg.type == 'error'"
+            >
+              <span>{{ msg.message }}</span> <br />
+            </div>
+            <div
+              class="console-entry console-entry-console"
+              v-if="msg.type == 'console'"
+            >
+              <span>{{ msg.message }}</span> <br />
+            </div>
           </div>
         </template>
       </div>
@@ -88,7 +99,12 @@ let b = Field(3).mul(Field(2));
 
 console.log(b.toString());
 throw "throwing an error right here";`,
-      consoleOutput: [],
+      consoleOutput: [
+        {
+          type: 'console',
+          message: "Welcome! Time to get Snark'in ;)",
+        },
+      ],
     }
   },
   methods: {
@@ -108,6 +124,10 @@ throw "throwing an error right here";`,
       })
     },
     async transpile() {
+      this.consoleOutput.push({
+        type: 'console',
+        message: 'Executing code snippet..',
+      })
       const compilerOptions = {
         allowJs: false,
         alwaysStrict: true,
@@ -268,6 +288,14 @@ throw "throwing an error right here";`,
 
 .console-entry-info span {
   color: #f5eea2;
+}
+
+.console-entry-console {
+  background-color: #17181a;
+}
+
+.console-entry-console span {
+  color: #2b8aff;
 }
 
 .console-entry-error {
