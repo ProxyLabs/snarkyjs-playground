@@ -13,6 +13,20 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      {
+        property: 'og:description',
+        content:
+          'SnarkyJS Playground - develop Snapps and write zero knowledge proofs right inside your borwser!',
+      },
+      {
+        property: 'og:locale',
+        content: 'en_GB',
+      },
+      { property: 'og:site_name', content: 'SnarkyJS Playground' },
+      {
+        property: 'og:image',
+        content: './assets/images/logo_transparent.png',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
