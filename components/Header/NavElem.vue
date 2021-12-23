@@ -25,9 +25,9 @@ export default {
   border-bottom-right-radius: 1px;
   height: 100%;
   width: auto;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-left: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* margin-left: 15px; */
   color: white;
   text-align: center;
   cursor: pointer;
@@ -36,6 +36,7 @@ export default {
 
 .nav:hover {
   border-bottom: solid 3px rgb(0, 179, 255);
+  background-color: #26282e;
   transition: 0.3s;
 }
 .nav span {
