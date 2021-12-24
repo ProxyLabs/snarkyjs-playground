@@ -37,9 +37,9 @@
               class="console-entry console-entry-log"
               v-if="msg.type == 'log'"
             >
-              <span class="icon is-left">
+              <!-- <span class="icon is-left">
                 <font-awesome-icon :icon="['fas', 'terminal']" />
-              </span>
+              </span> -->
               <span>{{ msg.message }}</span> <br />
             </div>
             <div
@@ -181,24 +181,6 @@ throw "throwing an error right here";`,
     },
   },
   async created() {
-    let current_warn = console.warn
-    console.warn = (msg) => {
-      if (msg != '') {
-        this.consoleOutput.push({
-          type: 'warn',
-          message: msg,
-        })
-      }
-      current_warn.apply(null, arguments)
-    }
-    let current_info = console.info
-    console.info = (msg) => {
-      this.consoleOutput.push({
-        type: 'info',
-        message: msg,
-      })
-      current_info.apply(null, arguments)
-    }
     let current_log = console.log
     console.log = (msg) => {
       this.consoleOutput.push({
@@ -206,7 +188,29 @@ throw "throwing an error right here";`,
         message: msg,
       })
       current_log.apply(null, arguments)
+      current_log(msg)
     }
+
+    let current_warn = console.warn
+    console.warn = (msg) => {
+      this.consoleOutput.push({
+        type: 'warn',
+        message: msg,
+      })
+      current_warn.apply(null, arguments)
+      current_warn(msg)
+    }
+
+    let current_info = console.info
+    console.info = (msg) => {
+      this.consoleOutput.push({
+        type: 'info',
+        message: msg,
+      })
+      current_info.apply(null, arguments)
+      current_info(msg)
+    }
+
     let current_error = console.error
     console.error = (msg) => {
       this.consoleOutput.push({
@@ -214,6 +218,7 @@ throw "throwing an error right here";`,
         message: msg,
       })
       current_error.apply(null, arguments)
+      current_error(msg)
     }
   },
   mounted() {
@@ -315,6 +320,7 @@ throw "throwing an error right here";`,
   margin: 0;
   padding: 4px;
   padding-left: 10px;
+  white-space: pre;
 }
 
 .console-entry-log {
