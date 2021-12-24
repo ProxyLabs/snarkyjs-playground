@@ -25,7 +25,7 @@ export default {
       { property: 'og:site_name', content: 'SnarkyJS Playground' },
       {
         property: 'og:image',
-        content: './assets/images/logo_transparent.png',
+        content: '/logo_transparent.png',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
