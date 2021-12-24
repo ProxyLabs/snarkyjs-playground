@@ -138,7 +138,7 @@ throw "throwing an error right here";`,
     },
     async transpile() {
       this.consoleOutput.push({
-        type: 'console',
+        type: 'info',
         message: 'Executing code snippet..',
       })
       const compilerOptions = {
@@ -146,7 +146,7 @@ throw "throwing an error right here";`,
         alwaysStrict: true,
         checkJs: true,
         strict: true,
-        target: 'ESNext',
+        target: 'ES6',
       }
 
       //getDefaultCompilerOptions()
