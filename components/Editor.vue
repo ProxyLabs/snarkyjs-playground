@@ -15,69 +15,7 @@
         automaticLayout: true,
       }"
     />
-
-    <div class="console">
-      <div class="console-nav">
-        <span style="margin-right: 15px">>_ Console</span>
-        |
-        <span style="margin-right: 15px; margin-left: 15px">
-          <font-awesome-icon :icon="['fas', 'hashtag']" />
-          {{ consoleOutput.length }}</span
-        >
-        |
-        <span style="margin-left: 15px">
-          <font-awesome-icon :icon="['fas', 'exclamation-triangle']" />
-          {{ consoleOutput.filter((x) => x.type == 'error').length }}</span
-        >
-      </div>
-      <div class="terminal">
-        <template v-for="(msg, m) in consoleOutput">
-          <div :key="m">
-            <div
-              class="console-entry console-entry-log"
-              v-if="msg.type == 'log'"
-            >
-              <!-- <span class="icon is-left">
-                <font-awesome-icon :icon="['fas', 'terminal']" />
-              </span> -->
-              <span>{{ msg.message }}</span> <br />
-            </div>
-            <div
-              class="console-entry console-entry-error"
-              v-if="msg.type == 'error'"
-            >
-              <span class="icon is-left">
-                <font-awesome-icon :icon="['fas', 'times']" />
-              </span>
-              <span>{{ msg.message }}</span> <br />
-            </div>
-            <div
-              class="console-entry console-entry-info"
-              v-if="msg.type == 'info'"
-            >
-              <span class="icon is-left">
-                <font-awesome-icon :icon="['fas', 'info']" />
-              </span>
-              <span>{{ msg.message }}</span> <br />
-            </div>
-            <div
-              class="console-entry console-entry-warn"
-              v-if="msg.type == 'warn'"
-            >
-              <span class="icon is-left">
-                <font-awesome-icon :icon="['fas', 'bug']" />
-              </span>
-              <span>{{ msg.message }}</span> <br />
-            </div>
-          </div>
-        </template>
-      </div>
-      <!-- <div class="cursor">
-        <span style="color: white; font-size: 1.3rem; weight: 300"
-          >><span class="cursor">_</span></span
-        >
-      </div> -->
-    </div>
+    <Console :output="consoleOutput" />
   </div>
 </template>
 
@@ -85,6 +23,8 @@
 import MonacoEditor from 'vue-monaco'
 import Header from './Header/Header.vue'
 import NavElem from './Header/NavElem.vue'
+import Console from './Console.vue'
+
 import { transpileModule } from 'typescript'
 
 export default {
@@ -92,6 +32,7 @@ export default {
     MonacoEditor,
     NavElem,
     Header,
+    Console,
   },
   data() {
     return {
@@ -124,18 +65,18 @@ throw "throwing an error right here";`,
     clearConsole() {
       this.consoleOutput = []
     },
-    scrollConsole() {
-      let div = document.querySelector('div.terminal')
-      let divCurrentUserScrollPosition = div.scrollTop + div.offsetHeight
-      let divScrollHeight = div.scrollHeight
+    // scrollConsole() {
+    //   let div = document.querySelector('div.terminal')
+    //   let divCurrentUserScrollPosition = div.scrollTop + div.offsetHeight
+    //   let divScrollHeight = div.scrollHeight
 
-      div.addEventListener('DOMSubtreeModified', () => {
-        if (divScrollHeight === divCurrentUserScrollPosition) {
-          // Scroll to bottom of div
-          div.scrollTo({ left: 0, top: div.scrollHeight })
-        }
-      })
-    },
+    //   div.addEventListener('DOMSubtreeModified', () => {
+    //     if (divScrollHeight === divCurrentUserScrollPosition) {
+    //       // Scroll to bottom of div
+    //       div.scrollTo({ left: 0, top: div.scrollHeight })
+    //     }
+    //   })
+    // },
     async transpile() {
       this.consoleOutput.push({
         type: 'info',
@@ -244,25 +185,6 @@ throw "throwing an error right here";`,
   background-color: #1f2227 !important;
 }
 
-.console {
-  width: auto;
-  height: 170px;
-  /* margin-right: 20px; */
-  margin-top: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
-  /* margin: 4px, 4px;
-  padding: 4px;
-  border-radius: 5px;
-  width: 100%;
-  color: white;
-  border: solid 2px rgb(148, 148, 148);
-  height: 110px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify; */
-}
-
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -277,25 +199,6 @@ throw "throwing an error right here";`,
 
 ::-webkit-scrollbar-thumb:hover {
   background: #686868;
-}
-.terminal {
-  /* margin: 4px, 4px;
-  padding: 4px; */
-  width: auto;
-  color: white;
-  /* border: solid 2px rgb(148, 148, 148); */
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  border-bottom: 1px solid grey;
-}
-
-.console-nav {
-  color: grey;
-  padding: 5px;
-  background-color: #222427;
-  border-bottom: 3px solid #444549;
 }
 
 .execute-btn {
@@ -312,126 +215,5 @@ throw "throwing an error right here";`,
   margin-left: 5px;
   background-color: rgb(213, 213, 251);
   cursor: pointer;
-}
-
-.console-entry {
-  font-family: 'Fira Mono', 'Courier New', Courier, monospace;
-  border-bottom: 1px solid rgb(102, 102, 102);
-  margin: 0;
-  padding: 4px;
-  padding-left: 10px;
-  white-space: pre;
-}
-
-.console-entry-log {
-  background-color: #17181a;
-}
-
-.console-entry-log span {
-  color: #f5eea2;
-}
-
-.console-entry-info {
-  background-color: #17181a;
-}
-
-.console-entry-info span {
-  color: #2b8aff;
-}
-
-.console-entry-warn {
-  background-color: #17181a;
-}
-
-.console-entry-warn span {
-  color: #f69e83;
-}
-
-.console-entry-error {
-  background-color: #994332;
-  border-left: 4px solid rgb(199, 0, 0);
-}
-
-.console-entry-error span {
-  color: #ffffff;
-}
-
-.cursor {
-  -webkit-animation: blink 1s 11.5s infinite;
-  -moz-animation: blink 1s 8.5s infinite;
-  -o-animation: blink 1s 8.5s infinite;
-  animation: blink 1s 8.5s infinite;
-}
-
-@-webkit-keyframes blink {
-  0% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@-moz-keyframes blink {
-  0% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@-o-keyframes blink {
-  0% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes blink {
-  0% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
 }
 </style>
