@@ -65,18 +65,6 @@ throw "throwing an error right here";`,
     clearConsole() {
       this.consoleOutput = []
     },
-    // scrollConsole() {
-    //   let div = document.querySelector('div.terminal')
-    //   let divCurrentUserScrollPosition = div.scrollTop + div.offsetHeight
-    //   let divScrollHeight = div.scrollHeight
-
-    //   div.addEventListener('DOMSubtreeModified', () => {
-    //     if (divScrollHeight === divCurrentUserScrollPosition) {
-    //       // Scroll to bottom of div
-    //       div.scrollTo({ left: 0, top: div.scrollHeight })
-    //     }
-    //   })
-    // },
     async transpile() {
       this.consoleOutput.push({
         type: 'info',
@@ -90,10 +78,8 @@ throw "throwing an error right here";`,
         target: 'ES6',
       }
 
-      //getDefaultCompilerOptions()
-      // console.log(compilerOptions)
       let { outputText } = transpileModule(this.code, { compilerOptions })
-      //console.log(outputText)
+
       let pre = `
           async function load() {
             try {
@@ -118,7 +104,6 @@ throw "throwing an error right here";`,
           message: runtimeError,
         })
       }
-      // this.scrollConsole()
     },
   },
   async created() {
@@ -173,7 +158,6 @@ throw "throwing an error right here";`,
 
 <style scoped>
 .wrapper {
-  /* display: flex; */
   height: 100%;
 }
 

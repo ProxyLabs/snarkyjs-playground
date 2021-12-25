@@ -65,28 +65,14 @@ export default {
 .console {
   width: auto;
   height: 170px;
-  /* margin-right: 20px; */
   margin-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
-  /* margin: 4px, 4px;
-  padding: 4px;
-  border-radius: 5px;
-  width: 100%;
-  color: white;
-  border: solid 2px rgb(148, 148, 148);
-  height: 110px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify; */
 }
 
 .terminal {
-  /* margin: 4px, 4px;
-  padding: 4px; */
   width: auto;
   color: white;
-  /* border: solid 2px rgb(148, 148, 148); */
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
