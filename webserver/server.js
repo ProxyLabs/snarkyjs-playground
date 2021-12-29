@@ -1,9 +1,12 @@
 import express from 'express'
 import process from 'process'
 import path from 'path'
+import bodyParser from 'body-parser'
 const app = express()
-const PORT = 3000
+const PORT = 3001
 const __dirname = path.resolve()
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use((req, res, next) => {
   res.append('X-Frame-Options', 'ALLOWALL')
@@ -22,8 +25,13 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
-apiRouter.get('/test', (req, res, next) => {
-  console.log('test')
+apiRouter.post('/save', (req, res) => {
+  console.log(req.body)
+  res.send('asd')
+})
+
+apiRouter.get('/get/', (req, res) => {
+  console.log(req.body)
   res.send('asd')
 })
 
