@@ -25,9 +25,29 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
+// temp
+
+let projects = []
+
 apiRouter.post('/save', (req, res) => {
-  console.log(req.body)
-  res.send('asd')
+  let newProjectID = Buffer.from(Math.random().toString())
+    .toString('base64')
+    .substr(10, 5)
+
+  while (projects.filter((x) => x.projectID == newProjectID).length > 0) {
+    newProjectID = Buffer.from(Math.random().toString())
+      .toString('base64')
+      .substr(10, 5)
+  }
+
+  projects.push({
+    code: req.body.code,
+    projectID: newProjectID,
+    projectName: 'some name',
+  })
+
+  console.log(projects)
+  res.send('true')
 })
 
 apiRouter.get('/get/:projectID', (req, res) => {
