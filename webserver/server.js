@@ -1,7 +1,9 @@
 import express from 'express'
 import process from 'process'
+import path from 'path'
 const app = express()
 const PORT = 3000
+const __dirname = path.resolve()
 
 app.use((req, res, next) => {
   res.append('X-Frame-Options', 'ALLOWALL')
@@ -18,10 +20,22 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(express.static('../dist'))
+let apiRouter = express.Router()
 
-app.get('/test', function (req, res) {
-  res.send('Hello')
+// GET /api/users
+apiRouter.get('/test', (req, res, next) => {
+  console.log('test')
+  res.send('asd')
+})
+
+// prefix apiRouter with '/api'
+app.use('/api', apiRouter)
+
+app.use(express.static(path.join(__dirname, 'dist')))
+
+app.get('/', (req, res) => {
+  console.log(res)
+  res.sendFile('/../dist/index.html')
 })
 
 app.listen(PORT, () =>
