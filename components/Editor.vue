@@ -31,6 +31,7 @@ import Console from './Console.vue'
 import { transpileModule } from 'typescript'
 
 export default {
+  props: ['unparsedCode'],
   components: {
     MonacoEditor,
     NavElem,
@@ -111,6 +112,10 @@ throw "throwing an error right here";`,
     },
   },
   async created() {
+    if (this.$props.unparsedCode != null && this.$props.unparsedCode != '') {
+      this.code = this.$props.unparsedCode
+    }
+
     let current_log = console.log
     console.log = (msg) => {
       this.consoleOutput.push({

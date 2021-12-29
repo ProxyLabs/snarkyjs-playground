@@ -30,9 +30,21 @@ apiRouter.post('/save', (req, res) => {
   res.send('asd')
 })
 
-apiRouter.get('/get/', (req, res) => {
-  console.log(req.body)
-  res.send('asd')
+apiRouter.get('/get/:projectID', (req, res) => {
+  let code = `let a = 3;
+console.log(3);`
+
+  let func = new Function(code)
+
+  let stringied = JSON.stringify(code)
+  //console.log(stringied)
+
+  //console.log(JSON.parse(stringied))
+
+  res.json({
+    projectID: req.params.projectID,
+    code: stringied,
+  })
 })
 
 app.use('/api', apiRouter)
