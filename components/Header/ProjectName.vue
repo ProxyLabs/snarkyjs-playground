@@ -1,15 +1,20 @@
 <template>
   <div class="wrapper fira">
-    <input type="text" />
-    <span class="icon is-right">
+    <input type="text" v-model="projectName" />
+    <!-- <span class="icon is-right">
       <font-awesome-icon :icon="['fas', 'pen']" />
-    </span>
+    </span> -->
   </div>
 </template>
 <script>
 export default {
   name: 'ProjectName',
   props: [],
+  data() {
+    return {
+      projectName: 'sample-project-name',
+    }
+  },
   methods: {},
 }
 </script>
