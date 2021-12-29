@@ -22,13 +22,11 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
-// GET /api/users
 apiRouter.get('/test', (req, res, next) => {
   console.log('test')
   res.send('asd')
 })
 
-// prefix apiRouter with '/api'
 app.use('/api', apiRouter)
 
 app.use(express.static(path.join(__dirname, 'dist')))

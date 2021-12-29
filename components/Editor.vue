@@ -4,6 +4,7 @@
       <NavElem label="Run" icon="play" v-on:clicked="transpile()" />
       <NavElem label="Clear" icon="trash" v-on:clicked="clearConsole()" />
       <NavElem label="Share" icon="link" />
+      <ProjectName />
     </Header>
 
     <MonacoEditor
@@ -23,6 +24,8 @@
 import MonacoEditor from 'vue-monaco'
 import Header from './Header/Header.vue'
 import NavElem from './Header/NavElem.vue'
+import ProjectName from './Header/ProjectName.vue'
+
 import Console from './Console.vue'
 
 import { transpileModule } from 'typescript'
@@ -33,6 +36,7 @@ export default {
     NavElem,
     Header,
     Console,
+    ProjectName,
   },
   data() {
     return {
