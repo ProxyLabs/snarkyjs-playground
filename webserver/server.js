@@ -18,7 +18,11 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(express.static('dist'))
+app.use(express.static('../dist'))
+
+app.get('/test', function (req, res) {
+  res.send('Hello')
+})
 
 app.listen(PORT, () =>
   console.log(`Server listening on port: ${PORT} with PID ${process.pid}`)
