@@ -3,7 +3,7 @@ import process from 'process'
 import path from 'path'
 import bodyParser from 'body-parser'
 
-import { createProject } from './manager.js'
+import { createProject, getProject } from './manager.js'
 
 const app = express()
 const PORT = 3001
@@ -32,7 +32,7 @@ apiRouter.post('/save', async (req, res) => {
   let projectID = await createProject(req.body.name, req.body.code)
 
   if (projectID != null) {
-    res.json({
+    res.status(200).json({
       project_id: projectID,
     })
   } else {
@@ -42,11 +42,15 @@ apiRouter.post('/save', async (req, res) => {
   }
 })
 
-apiRouter.get('/get/:projectID', (req, res) => {
-  res.json({
-    projectID: req.params.projectID,
-    code: stringied,
-  })
+apiRouter.get('/get/:projectID', async (req, res) => {
+  let project = await getProject(req.params.projectID)
+  if (project != null) {
+    res.status(200).json(project)
+  } else {
+    res.status(400).json({
+      error: "Couldn't get project",
+    })
+  }
 })
 
 app.use('/api', apiRouter)

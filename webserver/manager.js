@@ -1,6 +1,10 @@
-import { projectExists, insertProject } from './libs/database_controller.js'
+import {
+  projectExists,
+  insertProject,
+  findbyId,
+} from './libs/database_controller.js'
 
-export { createProject }
+export { createProject, getProject }
 
 async function createProject(code, name) {
   let projectId = await generateIdentifier()
@@ -14,6 +18,17 @@ async function createProject(code, name) {
   let success = await insertProject(project)
   if (!success) return null
   else return projectId
+}
+
+async function getProject(projectID) {
+  let project = await findbyId(projectID)
+  if (project == null) return null
+  else
+    return {
+      code: project.project_code,
+      project_id: project.project_id,
+      project_name: project.project_name,
+    }
 }
 
 async function generateIdentifier() {

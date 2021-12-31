@@ -1,6 +1,6 @@
 import executeQuery from './database_manager.js'
 
-export { projectExists, insertProject }
+export { projectExists, insertProject, findbyId }
 
 async function projectExists(id) {
   try {
@@ -24,5 +24,17 @@ async function insertProject(project) {
     return res[0].project_id ? true : false
   } catch (error) {
     return false
+  }
+}
+
+async function findbyId(id) {
+  try {
+    const res = await executeQuery(
+      'SELECT * FROM projects WHERE project_id = $1',
+      [id]
+    )
+    return res[0].count == 0 ? null : res[0]
+  } catch (error) {
+    return null
   }
 }
