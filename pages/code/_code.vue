@@ -22,8 +22,8 @@ export default Vue.extend({
       `http://127.0.0.1:3001/api/get/${this.$route.params.code}`
     )
     let parsed = await res.json()
-    console.log(parsed.project_code)
-    this.code = JSON.parse(parsed.project_code)
+
+    this.code = parsed.project_code
     this.finishedLoading = true
   },
 })

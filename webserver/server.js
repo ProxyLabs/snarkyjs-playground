@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 let apiRouter = express.Router()
 
 apiRouter.post('/save', async (req, res) => {
-  let projectID = await createProject(req.body.name, req.body.code)
+  let projectID = await createProject(req.body.code, req.body.name)
 
   if (projectID != null) {
     res.status(200).json({
