@@ -28,10 +28,18 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
-apiRouter.post('/save', (req, res) => {
-  createProject()
+apiRouter.post('/save', async (req, res) => {
+  let projectID = await createProject(req.body.name, req.body.code)
 
-  res.send('true')
+  if (projectID != null) {
+    res.json({
+      project_id: projectID,
+    })
+  } else {
+    res.status(400).json({
+      error: "Couldn't save project",
+    })
+  }
 })
 
 apiRouter.get('/get/:projectID', (req, res) => {

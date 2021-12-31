@@ -11,9 +11,9 @@ async function createProject(code, name) {
     project_name: name,
   }
 
-  let res = await insertProject(project)
-
-  return projectId
+  let success = await insertProject(project)
+  if (!success) return null
+  else return projectId
 }
 
 async function generateIdentifier() {
