@@ -2,6 +2,9 @@ import express from 'express'
 import process from 'process'
 import path from 'path'
 import bodyParser from 'body-parser'
+
+import { createProject, getProject } from './manager.js'
+
 const app = express()
 const PORT = 3001
 const __dirname = path.resolve()
@@ -25,46 +28,29 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
-// temp
+apiRouter.post('/save', async (req, res) => {
+  let projectID = await createProject(req.body.name, req.body.code)
 
-let projects = []
-
-apiRouter.post('/save', (req, res) => {
-  let newProjectID = Buffer.from(Math.random().toString())
-    .toString('base64')
-    .substr(10, 5)
-
-  while (projects.filter((x) => x.projectID == newProjectID).length > 0) {
-    newProjectID = Buffer.from(Math.random().toString())
-      .toString('base64')
-      .substr(10, 5)
+  if (projectID != null) {
+    res.status(200).json({
+      project_id: projectID,
+    })
+  } else {
+    res.status(400).json({
+      error: "Couldn't save project",
+    })
   }
-
-  projects.push({
-    code: req.body.code,
-    projectID: newProjectID,
-    projectName: 'some name',
-  })
-
-  console.log(projects)
-  res.send('true')
 })
 
-apiRouter.get('/get/:projectID', (req, res) => {
-  let code = `let a = 3;
-console.log(3);`
-
-  let func = new Function(code)
-
-  let stringied = JSON.stringify(code)
-  //console.log(stringied)
-
-  //console.log(JSON.parse(stringied))
-
-  res.json({
-    projectID: req.params.projectID,
-    code: stringied,
-  })
+apiRouter.get('/get/:projectID', async (req, res) => {
+  let project = await getProject(req.params.projectID)
+  if (project != null) {
+    res.status(200).json(project)
+  } else {
+    res.status(400).json({
+      error: "Couldn't get project",
+    })
+  }
 })
 
 app.use('/api', apiRouter)
