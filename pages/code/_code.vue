@@ -18,9 +18,12 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    let res = await fetch('http://127.0.0.1:3001/api/get/123')
+    let res = await fetch(
+      `http://127.0.0.1:3001/api/get/${this.$route.params.code}`
+    )
     let parsed = await res.json()
-    this.code = JSON.parse(parsed.code)
+
+    this.code = parsed.project_code
     this.finishedLoading = true
   },
 })

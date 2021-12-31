@@ -10,7 +10,7 @@ async function createProject(code, name) {
   let projectId = await generateIdentifier()
 
   let project = {
-    code: code,
+    project_code: code,
     project_id: projectId,
     project_name: name,
   }
@@ -25,7 +25,7 @@ async function getProject(projectID) {
   if (project == null) return null
   else
     return {
-      code: project.project_code,
+      project_code: project.project_code,
       project_id: project.project_id,
       project_name: project.project_name,
     }

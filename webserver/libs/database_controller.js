@@ -19,7 +19,7 @@ async function insertProject(project) {
     const res = await executeQuery(
       `INSERT INTO projects (project_id, project_name, project_code)
       VALUES ($1, $2, $3) returning project_id;`,
-      [project.project_id, project.code, project.project_name]
+      [project.project_id, project.project_name, project.project_code]
     )
     return res[0].project_id ? true : false
   } catch (error) {
