@@ -2,6 +2,9 @@ import express from 'express'
 import process from 'process'
 import path from 'path'
 import bodyParser from 'body-parser'
+
+import { createProject } from './manager.js'
+
 const app = express()
 const PORT = 3001
 const __dirname = path.resolve()
@@ -25,42 +28,13 @@ app.use((req, res, next) => {
 
 let apiRouter = express.Router()
 
-// temp
-
-let projects = []
-
 apiRouter.post('/save', (req, res) => {
-  let newProjectID = Buffer.from(Math.random().toString())
-    .toString('base64')
-    .substr(10, 5)
+  createProject()
 
-  while (projects.filter((x) => x.projectID == newProjectID).length > 0) {
-    newProjectID = Buffer.from(Math.random().toString())
-      .toString('base64')
-      .substr(10, 5)
-  }
-
-  projects.push({
-    code: req.body.code,
-    projectID: newProjectID,
-    projectName: 'some name',
-  })
-
-  console.log(projects)
   res.send('true')
 })
 
 apiRouter.get('/get/:projectID', (req, res) => {
-  let code = `let a = 3;
-console.log(3);`
-
-  let func = new Function(code)
-
-  let stringied = JSON.stringify(code)
-  //console.log(stringied)
-
-  //console.log(JSON.parse(stringied))
-
   res.json({
     projectID: req.params.projectID,
     code: stringied,
