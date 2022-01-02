@@ -9,13 +9,17 @@
 <script>
 export default {
   name: 'ProjectName',
-  props: [],
+  props: ['projectTitle'],
   data() {
     return {
       projectName: 'sample-project-name',
     }
   },
-  methods: {},
+  methods: {
+    getName() {
+      return this.projectName
+    },
+  },
 }
 </script>
 

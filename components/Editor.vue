@@ -3,8 +3,8 @@
     <Header>
       <NavElem label="Run" icon="play" v-on:clicked="transpile()" />
       <NavElem label="Clear" icon="trash" v-on:clicked="clearConsole()" />
-      <NavElem label="Share" icon="link" />
-      <ProjectName />
+      <NavElem label="Share" icon="link" v-on:clicked="shareProject()" />
+      <ProjectName ref="projectName" />
     </Header>
 
     <MonacoEditor
@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      projectTitle: 'sample-project',
       code: `/*
     Currently only dynamic import works
     the entire script will be executed locally inside your browser;
@@ -67,6 +68,29 @@ throw "throwing an error right here";`,
     }
   },
   methods: {
+    async shareProject() {
+      let project = {
+        project_name: this.$refs.projectName.getName(),
+        project_code: this.code,
+      }
+      let res = await fetch('http://127.0.0.1:3001/api/save', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(project),
+      })
+      let parsed = await res.json()
+      if (res.status != 200) {
+        // TODO: error
+        throw 'Error'
+      }
+
+      this.$router.push({
+        path: `/code/${parsed.project_id}`,
+      })
+    },
     clearConsole() {
       this.consoleOutput = []
     },
