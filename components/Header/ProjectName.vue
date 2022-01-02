@@ -8,14 +8,23 @@
 </template>
 <script>
 export default {
-  name: 'ProjectName',
-  props: [],
+  name: 'name',
+  props: ['name'],
   data() {
     return {
       projectName: 'sample-project-name',
     }
   },
-  methods: {},
+  methods: {
+    getName() {
+      return this.projectName
+    },
+  },
+  created() {
+    if (this.$props.name != '' || this.$props.name != null) {
+      this.projectName = this.$props.name
+    }
+  },
 }
 </script>
 

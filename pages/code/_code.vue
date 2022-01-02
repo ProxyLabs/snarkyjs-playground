@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <ClientOnly>
-      <Editor v-if="finishedLoading" :unparsedCode="code" />
+      <Editor v-if="finishedLoading" :unparsedCode="code" :name="projectName" />
     </ClientOnly>
   </div>
 </template>
@@ -14,6 +14,7 @@ export default Vue.extend({
   data() {
     return {
       code: ``,
+      projectName: '',
       finishedLoading: false,
     }
   },
@@ -24,6 +25,7 @@ export default Vue.extend({
     let parsed = await res.json()
 
     this.code = parsed.project_code
+    this.projectName = parsed.project_name
     this.finishedLoading = true
   },
 })

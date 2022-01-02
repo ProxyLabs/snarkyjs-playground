@@ -10,6 +10,7 @@ const PORT = 3001
 const __dirname = path.resolve()
 
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.use((req, res, next) => {
   res.append('X-Frame-Options', 'ALLOWALL')
@@ -29,8 +30,10 @@ app.use((req, res, next) => {
 let apiRouter = express.Router()
 
 apiRouter.post('/save', async (req, res) => {
-  let projectID = await createProject(req.body.code, req.body.name)
-
+  let projectID = await createProject(
+    req.body.project_code,
+    req.body.project_name
+  )
   if (projectID != null) {
     res.status(200).json({
       project_id: projectID,

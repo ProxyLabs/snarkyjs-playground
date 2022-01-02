@@ -40,11 +40,3 @@ async function generateIdentifier() {
   if (exists) return generateIdentifier()
   else return newProjectID
 }
-
-async function test() {
-  // let id = await generateIdentifier()
-  // console.log(id)
-  await createProject('some_code();', 'some fancy project')
-}
-
-test()
