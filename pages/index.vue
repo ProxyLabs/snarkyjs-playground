@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <ClientOnly>
-      <Editor unparsedCode="" />
+      <Editor unparsedCode="" name="" />
     </ClientOnly>
   </div>
 </template>

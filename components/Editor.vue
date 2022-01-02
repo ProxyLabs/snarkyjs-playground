@@ -4,7 +4,7 @@
       <NavElem label="Run" icon="play" v-on:clicked="transpile()" />
       <NavElem label="Clear" icon="trash" v-on:clicked="clearConsole()" />
       <NavElem label="Share" icon="link" v-on:clicked="shareProject()" />
-      <ProjectName ref="projectName" />
+      <ProjectName ref="projectName" :name="projectName" />
     </Header>
 
     <MonacoEditor
@@ -31,7 +31,7 @@ import Console from './Console.vue'
 import { transpileModule } from 'typescript'
 
 export default {
-  props: ['unparsedCode'],
+  props: ['unparsedCode', 'name'],
   components: {
     MonacoEditor,
     NavElem,
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      projectTitle: 'sample-project',
+      projectName: 'sample-project',
       code: `/*
     Currently only dynamic import works
     the entire script will be executed locally inside your browser;
@@ -138,6 +138,9 @@ throw "throwing an error right here";`,
   async created() {
     if (this.$props.unparsedCode != null && this.$props.unparsedCode != '') {
       this.code = this.$props.unparsedCode
+    }
+    if (this.$props.name != null && this.$props.name != '') {
+      this.projectName = this.$props.name
     }
 
     let current_log = console.log

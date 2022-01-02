@@ -8,8 +8,8 @@
 </template>
 <script>
 export default {
-  name: 'ProjectName',
-  props: ['projectTitle'],
+  name: 'name',
+  props: ['name'],
   data() {
     return {
       projectName: 'sample-project-name',
@@ -19,6 +19,11 @@ export default {
     getName() {
       return this.projectName
     },
+  },
+  created() {
+    if (this.$props.name != '' || this.$props.name != null) {
+      this.projectName = this.$props.name
+    }
   },
 }
 </script>
