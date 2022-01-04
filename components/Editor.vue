@@ -73,7 +73,7 @@ throw "throwing an error right here";`,
         project_name: this.$refs.projectName.getName(),
         project_code: this.code,
       }
-      let res = await fetch('http://127.0.0.1:3001/api/save', {
+      let res = await fetch('https://editor.proxylabs.org/api/save', {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',

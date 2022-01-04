@@ -20,7 +20,7 @@ export default Vue.extend({
   },
   async mounted() {
     let res = await fetch(
-      `http://127.0.0.1:3001/api/get/${this.$route.params.code}`
+      `https://editor.proxylabs.org/api/get/${this.$route.params.code}`
     )
     let parsed = await res.json()
 

@@ -58,13 +58,6 @@ apiRouter.get('/get/:projectID', async (req, res) => {
 
 app.use('/api', apiRouter)
 
-app.use(express.static(path.join(__dirname, 'dist')))
-
-app.get('/', (req, res) => {
-  console.log(res)
-  res.sendFile('/../dist/index.html')
-})
-
 app.listen(PORT, () =>
   console.log(`Server listening on port: ${PORT} with PID ${process.pid}`)
 )
