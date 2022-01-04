@@ -19,7 +19,7 @@ function getClient() {
     user: process.env.PG_USER_SNARKYJS_PLAYGROUND,
     database: 'snarkyjs_playground',
     port: process.env.PG_PORT,
-    password: process.env.PG_PASSWORD,
+    password: process.env.PG_PASSWORD_SNARKYJS_PLAYGROUND,
   })
   return client
 }
