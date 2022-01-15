@@ -9,16 +9,16 @@
 </template>
 
 <script lang="ts">
-import MonacoEditor from "./MonacoEditor.vue";
+import MonacoEditor from '../components/MonacoEditor.vue'
+
 export default {
-  name: "Main",
+  name: 'Home',
   components: {
     MonacoEditor,
   },
-};
+}
 </script>
-
-<style>
+<style scoped>
 main {
   height: calc(100vh - var(--nav-height));
 }

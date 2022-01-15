@@ -6,6 +6,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-vue": "^2.0.1",
     "@vueuse/core": "^6.5.3",
     "init": "^0.1.2",
     "monaco-editor": "^0.25.2",

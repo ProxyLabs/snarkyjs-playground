@@ -1,18 +1,14 @@
 <template>
-  <Main />
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </div>
+  <router-view />
 </template>
 
-<script setup lang="ts">
-import Main from './components/Main.vue'
-
+<script lang="ts">
 export default {
   name: 'App',
   mounted() {},
 }
 </script>
-
-<style>
-body {
-  --nav-height: 4.2rem;
-}
-</style>
