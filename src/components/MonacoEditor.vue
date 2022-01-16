@@ -41,6 +41,18 @@ const emit =
   defineEmits<(e: 'change', payload: typeof editorValue.value) => void>()
 
 onMounted(() => {
+  var libSource = [
+    'declare class Facts {',
+    '    /**',
+    '     * Returns the next fact',
+    '     */',
+    '    static next():string',
+    '}',
+  ].join('\n')
+  var libUri = 'ts:filename/facts.d.ts'
+  monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri)
+  monaco.editor.createModel(libSource, 'typescript', monaco.Uri.parse(libUri))
+
   editor = monaco.editor.create(container.value!, {
     language: 'typescript',
     theme: isDark.value ? 'vs-dark' : 'vs',
