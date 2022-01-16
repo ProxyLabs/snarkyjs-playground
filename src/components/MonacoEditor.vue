@@ -1,6 +1,5 @@
 <template>
-  <div ref="container" style="height: calc(100% - 2.5rem)">
-  </div>
+  <div ref="container" style="height: calc(100vh - 3.5em)"></div>
 </template>
 
 <script setup lang="ts">

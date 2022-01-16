@@ -1,11 +1,7 @@
 <template>
-  <main class="border-t border-gray-200 dark:border-gray-700">
-    <div class="flex flex-row h-full">
-      <div class="w-full">
-        <MonacoEditor language="typescript" />
-      </div>
-    </div>
-  </main>
+  <div class="w-full h-full">
+    <MonacoEditor language="typescript" />
+  </div>
 </template>
 
 <script lang="ts">
