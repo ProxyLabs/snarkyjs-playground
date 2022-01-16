@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, watch } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
-import { useDarkGlobal } from '../utils'
+import { useDarkGlobal, getDefaultCode } from '../utils'
 
 // Import monaco
 // https://github.com/vitejs/vite/discussions/1791
@@ -35,7 +35,7 @@ const isDark = useDarkGlobal()
 //   {}
 // );
 
-const editorValue = { value: { typescript: 'hello luL' } }
+const editorValue = getDefaultCode()
 
 const emit =
   defineEmits<(e: 'change', payload: typeof editorValue.value) => void>()
