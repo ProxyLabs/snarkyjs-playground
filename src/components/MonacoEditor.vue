@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, watch } from 'vue'
 import { useResizeObserver, useDebounceFn } from '@vueuse/core'
-import { useDarkGlobal, getDefaultCode } from '../utils'
+import { getGlobalTheme, getDefaultCode } from '../utils'
 
 // Import monaco
 // https://github.com/vitejs/vite/discussions/1791
@@ -27,7 +27,7 @@ const container = ref<HTMLDivElement | null>(null)
 
 let editor: monaco.editor.IStandaloneCodeEditor
 
-const isDark = useDarkGlobal()
+const isDark = getGlobalTheme()
 
 // const language = "javascript";
 // const editorState = useStorage<Record<string, any>>(
@@ -41,7 +41,7 @@ const emit =
   defineEmits<(e: 'change', payload: typeof editorValue.value) => void>()
 
 onMounted(() => {
-  var libSource = [
+  let typeDefinitions = [
     'declare class Facts {',
     '    /**',
     '     * Returns the next fact',
@@ -49,9 +49,16 @@ onMounted(() => {
     '    static next():string',
     '}',
   ].join('\n')
-  var libUri = 'ts:filename/facts.d.ts'
-  monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri)
-  monaco.editor.createModel(libSource, 'typescript', monaco.Uri.parse(libUri))
+  var typeDefinitionsUri = 'ts:filename/facts.d.ts'
+  monaco.languages.typescript.javascriptDefaults.addExtraLib(
+    typeDefinitions,
+    typeDefinitionsUri
+  )
+  monaco.editor.createModel(
+    typeDefinitions,
+    'typescript',
+    monaco.Uri.parse(typeDefinitionsUri)
+  )
 
   editor = monaco.editor.create(container.value!, {
     language: 'typescript',

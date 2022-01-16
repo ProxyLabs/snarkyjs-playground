@@ -1,6 +1,6 @@
 import { createGlobalState, useDark } from '@vueuse/core'
 
-export const useDarkGlobal = createGlobalState(() => useDark())
+export const getGlobalTheme = createGlobalState(() => useDark())
 
 export const getDefaultCode = () => {
   return {
