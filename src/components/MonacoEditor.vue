@@ -1,6 +1,12 @@
 <template>
-  <div ref="container" style="height: calc(100vh - 3.5em)"></div>
+  <div ref="container" class="editor"></div>
 </template>
+<style scoped>
+.editor {
+  height: calc(60vh - 3.5em);
+  border: solid 2px black;
+}
+</style>
 
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, watch } from 'vue'
