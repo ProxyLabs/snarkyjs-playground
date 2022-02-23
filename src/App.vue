@@ -4,8 +4,8 @@
     <router-link to="/about">About</router-link>
   </div> -->
   <Header>
-    <router-link to="/">
-      <NavElem label="Home" />
+    <router-link to="/Learn">
+      <NavElem label="Learn" />
     </router-link>
     <router-link to="/">
       <NavElem label="Official Docs" />

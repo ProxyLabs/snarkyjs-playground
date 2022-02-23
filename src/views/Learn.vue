@@ -1,14 +1,16 @@
 <template>
   <div class="wrapper">
-    <div class="left"></div>
-    <stepComponent stepComponent></stepComponent>>
+    <div class="left">
+      <router-view></router-view>
+    </div>
+
     <div class="right">
       <h1>Chapters</h1>
-      {{ currentMdQuery }}
+
       <hr />
       <template v-for="(nav, i) in navigation.guides['learning-mina']">
-        <router-link :to="nav.file">
-          <h3>
+        <router-link :to="nav.path">
+          <h3 class="link">
             {{ `${i + 1}. - ${nav.title}` }}
           </h3>
         </router-link>
@@ -17,9 +19,12 @@
           v-if="nav.child_elements.length !== 0"
           v-for="(child, c) in nav.child_elements"
         >
-          <h3 style="margin-left: 15px">
+        <router-link :to="child.path">
+          <h3 class="link" style="margin-left: 15px">
             {{ `${i + 1}.${c + 1} - ${child.title}` }}
           </h3>
+        </router-link>
+     
         </template>
       </template>
     </div>
@@ -29,12 +34,8 @@
 <script lang="ts">
 import navigationJson from '../markdown/navigation.json'
 export default {
-  name: 'Home',
-  computed: {
-    currentMdQuery(): string | undefined {
-      return this.$route.query['tut']
-    },
-  },
+  name: 'Learn',
+  computed: {},
   components: {},
   data: () => {
     return {
@@ -45,6 +46,11 @@ export default {
 }
 </script>
 <style scoped>
+
+.link {
+  margin-top: 5px;
+  margin-left: 5px;
+}
 .left {
   margin-top: 30px;
   width: 80%;

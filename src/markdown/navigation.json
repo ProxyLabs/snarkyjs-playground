@@ -3,11 +3,11 @@
     "learning-mina": [
       {
         "title": "Getting Started",
-        "file": "1.1_Getting_Started.md",
+        "path": "/learn/Getting_Started",
         "child_elements": [
           {
-            "title": "What really matters",
-            "file": "1.2_What_really_matters.md"
+            "title": "How Snapps Work",
+            "path": "/learn/How_Snapps_Work"
           }
         ]
       }
