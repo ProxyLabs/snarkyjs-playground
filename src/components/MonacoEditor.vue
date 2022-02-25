@@ -3,8 +3,11 @@
 </template>
 <style scoped>
 .editor {
-  height: calc(60vh - 3.5em);
-  border: solid 2px black;
+  position: relative;
+  height: auto;
+  width: auto;
+  border-width: 1px;
+  border-radius: 5px;
 }
 </style>
 

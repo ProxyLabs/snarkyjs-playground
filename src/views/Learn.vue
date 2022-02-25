@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="left">
+      <EditorSmall />
       <router-view></router-view>
     </div>
 
@@ -32,11 +33,13 @@
 </template>
 
 <script lang="ts">
+
+import EditorSmall from "../components/EditorSmall/EditorSmall.vue"
 import navigationJson from '../markdown/navigation.json'
 export default {
   name: 'Learn',
   computed: {},
-  components: {},
+  components: {EditorSmall},
   data: () => {
     return {
       navigation: navigationJson,
